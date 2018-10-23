@@ -1,21 +1,31 @@
 package com.testmind.al.testmind;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LogoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        MyLog.d("LogoActivity","Iniciando OnCreate");
+        MyLog.d("LogoActivity", "Iniciando OnCreate");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
 
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), ResumeActivity.class));
+         finish(); }
+        }, 3000);
 
-        MyLog.d("LogoActivity","Finalizado OnCreate");
+        MyLog.d("LogoActivity", "Finalizado OnCreate");
     }
 
     @Override
@@ -65,4 +75,5 @@ public class LogoActivity extends AppCompatActivity {
 
         MyLog.d("LogoActivity","Finalizado OnDestroy");
     }
+
 }

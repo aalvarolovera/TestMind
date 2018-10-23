@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResumeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarSobreNosotros"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include
+        layout="@layout/content_resume"
+        app:layout_anchorGravity="left|center" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/categorias_disponibles"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/categorias_disponibles" />
+    <TextView
+        android:id="@+id/preguntas_disponibles"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="120dp"
+        android:text="@string/preguntas_disponibles" />
+    <TextView
+        android:id="@+id/cuestionarios_realizados"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="150dp"
+        android:text="@string/cuestionarios_realizados" />
+    <TextView
+        android:id="@+id/calificacion_media"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/calificacion_media" />
+    <TextView
+        android:id="@+id/num_categorias_disponibles"
+        android:layout_width="23dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/num_categorias_disponibles" />
+
+    <TextView
+        android:id="@+id/num_preguntas_disponibles"
+        android:layout_width="23dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="120dp"
+        android:text="@string/num_preguntas_disponibles" />
+    <TextView
+        android:id="@+id/num_cuestionarios_realizados"
+        android:layout_width="23dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="150dp"
+        android:text="@string/num_cuestionarios_realizados" />
+    <TextView
+        android:id="@+id/num_calificacion_media"
+        android:layout_width="23dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/num_calificacion_media" />
+
+</android.support.design.widget.CoordinatorLayout>

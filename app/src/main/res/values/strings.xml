@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">TestMind</string>
+    <string name="title_activity_resume">ResumeActivity</string>
+    <string name="preguntas_disponibles">Preguntas disponibles:</string>
+    <string name="categorias_disponibles">Categorías disponibles:</string>
+    <string name="cuestionarios_realizados">Cuestionarios realizados:</string>
+    <string name="calificacion_media">Calificación media:</string>
+    <string name="num_preguntas_disponibles">1</string>
+    <string name="num_categorias_disponibles">2</string>
+    <string name="num_cuestionarios_realizados">3</string>
+    <string name="num_calificacion_media">4</string>
+    <string name="title_activity_acerca_de">AcercaDe</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>
