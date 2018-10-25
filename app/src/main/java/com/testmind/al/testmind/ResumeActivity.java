@@ -55,10 +55,19 @@ public class ResumeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Log.i("ActionBar", "Settings!");
-                startActivity(new Intent(getApplicationContext(),AcercaDe.class));
+            case R.id.action_acercaDe:
+                Log.i("ActionBar", "Acerca de");
+                startActivity(new Intent(getApplicationContext(),AcercaDeActivity.class));
                 return true;
+            case R.id.action_preguntas:
+                Log.i("ActionBar", "Preguntas");
+                startActivity(new Intent(getApplicationContext(),PreguntasActivity.class));
+                return true;
+                /*
+            case R.id.action_buscar:
+                Log.i("ActionBar", "Buscar!");;
+                return true;
+                */
             default:
                 return super.onOptionsItemSelected(item);
         }
