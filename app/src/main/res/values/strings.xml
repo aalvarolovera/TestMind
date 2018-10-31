@@ -32,4 +32,10 @@
     <string name="action_acercaDe">Acerca de</string>
     <string name="action_preguntas">Preguntas</string>
     <string name="title_activity_acerca_de">AcercaDeActivity</string>
+    <string name="write_permission_denied">No se puede guardar la pregunta</string>
+    <string name="write_permission_granted">Pregunta guardada con éxito</string>
+    <string name="internet_permission_denied">Permiso de escritura denegado</string>
+    <string name="internet_permission_granted">Permisos de escritura concedidos</string>
+    <string name="write_permission_accepted">Permiso de escritura concedidos</string>
+    <string name="write_permission_not_accepted">Permisos de escritura denegados</string>
 </resources>
