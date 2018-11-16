@@ -37,35 +37,35 @@
         android:id="@+id/categorias_disponibles"
         android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="90dp"
         android:text="@string/categorias_disponibles" />
     <TextView
         android:id="@+id/preguntas_disponibles"
         android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="120dp"
         android:text="@string/preguntas_disponibles" />
     <TextView
         android:id="@+id/cuestionarios_realizados"
         android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="150dp"
         android:text="@string/cuestionarios_realizados" />
     <TextView
         android:id="@+id/calificacion_media"
         android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="180dp"
         android:text="@string/calificacion_media" />
     <TextView
         android:id="@+id/num_categorias_disponibles"
         android:layout_width="23dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="90dp"
         android:text="@string/num_categorias_disponibles" />
 
@@ -73,21 +73,21 @@
         android:id="@+id/num_preguntas_disponibles"
         android:layout_width="23dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="120dp"
         android:text="@string/num_preguntas_disponibles" />
     <TextView
         android:id="@+id/num_cuestionarios_realizados"
         android:layout_width="23dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="150dp"
         android:text="@string/num_cuestionarios_realizados" />
     <TextView
         android:id="@+id/num_calificacion_media"
         android:layout_width="23dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="180dp"
         android:text="@string/num_calificacion_media" />
 

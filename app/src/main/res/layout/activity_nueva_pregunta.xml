@@ -7,6 +7,7 @@
     tools:context=".NuevaPreguntaActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutNuevaPreguntaActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -42,11 +43,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="120dp"
         android:ems="10"
         android:inputType="textMultiLine"
         android:hint="@string/hintEnunciadoPregunta"
-        android:text="@string/enunciadoPregunta" />
+        android:text="@string/enunciadoPregunta"
+        android:autofillHints="" tools:targetApi="o" />
 
     <Spinner
         android:id="@+id/categoriaPregunta"
@@ -54,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="180dp" />
 
     <EditText
         android:id="@+id/respuestaCorrecta"
@@ -62,11 +64,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="220dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hintRespuestaCorrecta"
-        android:text="@string/respuestaCorrecta" />
+        android:text="@string/respuestaCorrecta"
+        android:autofillHints="" tools:targetApi="o" />
 
     <EditText
         android:id="@+id/respuestaIncorrecta1"
@@ -74,11 +77,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="260dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hintRespuestaIncorrecta1"
-        android:text="@string/respuestaIncorrecta1" />
+        android:text="@string/respuestaIncorrecta1"
+        android:autofillHints="" tools:targetApi="o"/>
 
     <EditText
         android:id="@+id/respuestaIncorrecta2"
@@ -86,11 +90,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="320dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hintRespuestaIncorrecta2"
-        android:text="@string/respuestaIncorrecta2" />
+        android:text="@string/respuestaIncorrecta2"
+        android:autofillHints="" tools:targetApi="o" />
 
     <EditText
         android:id="@+id/respuestaIncorrecta3"
@@ -98,19 +103,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="380dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hintRespuestaIncorrecta3"
-        android:text="@string/respuestaIncorrecta3" />
+        android:text="@string/respuestaIncorrecta3"
+        android:autofillHints="" tools:targetApi="o" />
 
     <Button
         android:id="@+id/buttonGuardar"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="400dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/buttonGuardarPre" />
 
 </android.support.design.widget.CoordinatorLayout>
