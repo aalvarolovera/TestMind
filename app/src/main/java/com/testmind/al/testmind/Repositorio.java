@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Repositorio {
     private static Repositorio miRepositorio;
     private ArrayList<Pregunta> todasPreguntas;
-//REPASAR LO DEL ID
+    //REPASAR LO DEL ID
     public static Repositorio getRepositorio() {
         if (miRepositorio == null) {
             miRepositorio = new Repositorio();
@@ -24,12 +24,12 @@ public class Repositorio {
         return todasPreguntas;
     }
 
-    public boolean insertPregunta(SQLiteDatabase db, int id, String enunciado, String categoria, String respuestaCorrecta,
+    public boolean insertPregunta(SQLiteDatabase db, String enunciado, String categoria, String respuestaCorrecta,
                                   String respuestaIncorrecta1, String respuestaIncorrecta2, String respuestaIncorrecta3){
         boolean exito=false;
         //Creamos el registro a insertar como objeto ContentValues
         ContentValues nuevoRegistro = new ContentValues();
-        nuevoRegistro.put("id",id);
+        //nuevoRegistro.put("id",id);
         nuevoRegistro.put("enunciado",enunciado);
         nuevoRegistro.put("categoria",categoria);
         nuevoRegistro.put("respuestaCorrecta",respuestaCorrecta);
@@ -42,7 +42,24 @@ public class Repositorio {
         }
         return exito;
     }
+    public boolean updatePregunta(SQLiteDatabase db,Pregunta pregunta){
+        boolean exito=false;
+        //Establecemos los campos-valores a actualizar
+        ContentValues valores = new ContentValues();
 
+        valores.put("id",pregunta.getId());
+        valores.put("enunciado",pregunta.getEnunciado());
+        valores.put("categoria",pregunta.getCategoria());
+        valores.put("respuestaCorrecta",pregunta.getPreguntaCorrecta());
+        valores.put("respuestaIncorrecta1",pregunta.getPreguntaIncorrecta1());
+        valores.put("respuestaIncorrecta2",pregunta.getPreguntaIncorrecta2());
+        valores.put("respuestaIncorrecta3",pregunta.getPreguntaIncorrecta3());
+        //Actualizamos el registro en la base de datos
+        if(db.update("Preguntas", valores, "id="+pregunta.getId(), null)!=-1){
+            exito=true;
+        }
+        return exito;
+    }
     public boolean updatePregunta(SQLiteDatabase db,int id, String enunciado, String categoria, String respuestaCorrecta,
                                   String respuestaIncorrecta1, String respuestaIncorrecta2, String respuestaIncorrecta3){
         boolean exito=false;
@@ -80,7 +97,7 @@ public class Repositorio {
             exito=true;
             //Recorremos el cursor hasta que no haya más registros
             do {
-                //int id= c.getInt(c.getColumnIndex("id"));
+                int id= c.getInt(c.getColumnIndex("id"));
                 String enunciado = c.getString(c.getColumnIndex("enunciado"));
                 String categoria= c.getString(c.getColumnIndex("categoria"));
                 String respuestaCorrecta = c.getString(c.getColumnIndex("respuestaCorrecta"));

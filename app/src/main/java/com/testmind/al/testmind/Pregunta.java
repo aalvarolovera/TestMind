@@ -10,7 +10,7 @@ public class Pregunta {
     private String preguntaIncorrecta3;
 
     public Pregunta(String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3) {
-        //this.id=id;
+       // this.id=id;
         this.enunciado=enunciado;
         this.categoria = categoria;
         this.preguntaCorrecta=preguntaCorrecta;

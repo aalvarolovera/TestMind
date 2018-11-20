@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TestMindSQLite extends SQLiteOpenHelper{
 
         //Sentencia SQL para crear la tabla de Preguntas
-        String sqlCreate = "CREATE TABLE Preguntas (id INTEGER,enunciado TEXT, categoria TEXT, preguntaCorrecta TEXT, preguntaIncorrecta1 TEXT" +
+        String sqlCreate = "CREATE TABLE Preguntas (id INTEGER PRIMARY KEY   AUTOINCREMENT,enunciado TEXT, categoria TEXT, preguntaCorrecta TEXT, preguntaIncorrecta1 TEXT" +
                 ",preguntaIncorrecta2 TEXT,preguntaIncorrecta3 TEXT )";
 
         public TestMindSQLite(Context contexto,String nombre, CursorFactory factory , int version) {
