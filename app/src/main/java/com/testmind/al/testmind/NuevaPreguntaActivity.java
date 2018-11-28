@@ -3,6 +3,7 @@ package com.testmind.al.testmind;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 
 public class NuevaPreguntaActivity extends AppCompatActivity {
 
@@ -77,6 +79,7 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
 
 
                 EditText enun =  (EditText) findViewById(R.id.enunciadoPregunta);
+                Spinner cate = (Spinner)findViewById(R.id.categoriaPregunta);
                 EditText preCor =  (EditText) findViewById(R.id.respuestaCorrecta);
                 EditText preIn1 =  (EditText) findViewById(R.id.respuestaIncorrecta1);
                 EditText preIn2 =  (EditText) findViewById(R.id.respuestaIncorrecta2);
@@ -94,10 +97,25 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                 //Que comprobar campos solo devuelva un true o false, que solo le entre el constrein layout global, y si
                 //falta alguno mostrar el snack bar generico pero que no lo haga el metodo comprobar campos
 
-                if(comprobarCamposPre(constraintLayoutNuevaPreguntaActivity, enun, preCor, preIn1,
+                if(comprobarCamposPre(constraintLayoutNuevaPreguntaActivity, enun,cate, preCor, preIn1,
                         preIn2,  preIn3)){
                     Snackbar.make(view, "Guardado", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                   String enunciado= enun.getText().toString().trim();
+                   String preguntaCorrecta=preCor.getText().toString().trim();
+                   String categoria=cate.getSelectedItem().toString().trim();
+                   String preguntaIn1=preIn1.getText().toString().trim();
+                   String preguntaIn2=preIn2.getText().toString().trim();
+                   String preguntaIn3=preIn3.getText().toString().trim();
+                    //Bundle bd=new Bundle();
+
+                    Pregunta p = new Pregunta(enunciado,categoria,preguntaCorrecta,preguntaIn1,preguntaIn2,preguntaIn3);
+                    //TestMindSQLite tsdbh=new TestMindSQLite(myContext,"Preguntas",null,1);
+                    //SQLiteDatabase db=tsdbh.getWritableDatabase();
+                    Repositorio.getRepositorio().insertPregunta(myContext,p);
+                    Repositorio.getRepositorio().createPregunta(p);
+                    Repositorio.getRepositorio().cerrarBBDD();
                 }else{
                     Snackbar.make(view, "Tienes que rellenar todos los campos", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -118,7 +136,7 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
 
     }
 
-    public boolean comprobarCamposPre(ConstraintLayout constraintLayoutNuevaPreguntaActivity, EditText enun, EditText preCor, EditText preInc1,
+    public boolean comprobarCamposPre(ConstraintLayout constraintLayoutNuevaPreguntaActivity, EditText enun,Spinner cate, EditText preCor, EditText preInc1,
                                    EditText preInc2, EditText preInc3){
             boolean lleno=false;
 
@@ -172,16 +190,15 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                 !preCor.getText().toString().isEmpty()&&
                 !preInc1.getText().toString().isEmpty()&&
                 !preInc2.getText().toString().isEmpty()&&
-                !preInc3.getText().toString().isEmpty()){
+                !preInc3.getText().toString().isEmpty()&&
+                 !cate.getSelectedItem().toString().isEmpty()){
+
             lleno=true;
             /*
                 guardar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         //Meter metodos para pedir permisos de escritura
-
-
                         Snackbar.make(view, "Guardado", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     }

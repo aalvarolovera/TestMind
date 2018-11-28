@@ -18,7 +18,15 @@ public class Pregunta {
         this.preguntaIncorrecta2=preguntaIncorrecta2;
         this.preguntaIncorrecta3=preguntaIncorrecta3;
     }
-
+    public Pregunta(int id,String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3) {
+        this.id=id;
+        this.enunciado=enunciado;
+        this.categoria = categoria;
+        this.preguntaCorrecta=preguntaCorrecta;
+        this.preguntaIncorrecta1=preguntaIncorrecta1;
+        this.preguntaIncorrecta2=preguntaIncorrecta2;
+        this.preguntaIncorrecta3=preguntaIncorrecta3;
+    }
     public int getId() {
         return id;
     }

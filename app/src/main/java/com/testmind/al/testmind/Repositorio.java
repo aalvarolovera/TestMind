@@ -1,6 +1,7 @@
 package com.testmind.al.testmind;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -9,6 +10,9 @@ import java.util.ArrayList;
 public class Repositorio {
     private static Repositorio miRepositorio;
     private ArrayList<Pregunta> todasPreguntas;
+    private static SQLiteDatabase db;
+    private static TestMindSQLite tmSQLite;
+    private  String ruta="/sdcard/BaseDatos/"+ "Preguntas" +".db";
     //REPASAR LO DEL ID
     public static Repositorio getRepositorio() {
         if (miRepositorio == null) {
@@ -20,29 +24,35 @@ public class Repositorio {
         todasPreguntas = new ArrayList<>();
     }
 
+    public void abrirBDEscritura(Context contexto){
+        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
+        db=tmSQLite.getWritableDatabase();
+    }
+
+    public void cerrarBBDD(){
+        db.close();
+    }
+
     public ArrayList<Pregunta> getTodasPreguntas() {
         return todasPreguntas;
     }
 
-    public boolean insertPregunta(SQLiteDatabase db, String enunciado, String categoria, String respuestaCorrecta,
-                                  String respuestaIncorrecta1, String respuestaIncorrecta2, String respuestaIncorrecta3){
+    public boolean insertPregunta(Context contexto,Pregunta p){
         boolean exito=false;
-        //Creamos el registro a insertar como objeto ContentValues
-        ContentValues nuevoRegistro = new ContentValues();
-        //nuevoRegistro.put("id",id);
-        nuevoRegistro.put("enunciado",enunciado);
-        nuevoRegistro.put("categoria",categoria);
-        nuevoRegistro.put("respuestaCorrecta",respuestaCorrecta);
-        nuevoRegistro.put("respuestaIncorrecta1",respuestaIncorrecta1);
-        nuevoRegistro.put("respuestaIncorrecta2",respuestaIncorrecta2);
-        nuevoRegistro.put("respuestaIncorrecta3",respuestaIncorrecta3);
-        //Insertamos el registro en la base de datos
-        if(db.insert("Preguntas", null, nuevoRegistro)!=-1){
-            exito=true;
+
+        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
+        db=tmSQLite.getWritableDatabase();
+
+        if(db!=null) {
+
+            db.execSQL("INSERT INTO Preguntas (enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3) VALUES ('" + p.getEnunciado()
+                    + "','" + p.getCategoria() + "','" + p.getPreguntaCorrecta() + "','" + p.getPreguntaIncorrecta1() + "','" + p.getPreguntaIncorrecta2() + "','" + p.getPreguntaIncorrecta3() + "') ");
+        exito=true;
         }
         return exito;
     }
-    public boolean updatePregunta(SQLiteDatabase db,Pregunta pregunta){
+
+    public boolean updatePregunta(Pregunta pregunta){
         boolean exito=false;
         //Establecemos los campos-valores a actualizar
         ContentValues valores = new ContentValues();
@@ -60,7 +70,7 @@ public class Repositorio {
         }
         return exito;
     }
-    public boolean updatePregunta(SQLiteDatabase db,int id, String enunciado, String categoria, String respuestaCorrecta,
+    public boolean updatePregunta(int id, String enunciado, String categoria, String respuestaCorrecta,
                                   String respuestaIncorrecta1, String respuestaIncorrecta2, String respuestaIncorrecta3){
         boolean exito=false;
         //Establecemos los campos-valores a actualizar
@@ -84,7 +94,7 @@ public class Repositorio {
         return false;
     }
 
-    public boolean selectPregunta(SQLiteDatabase db){
+    public boolean selectPregunta(){
 
         boolean exito=false;
         String[] campos = new String[] {"id", "enunciado","categoria","respuestaCorrecta","respuestaIncorrecta1","respuestaIncorrecta2",
@@ -112,6 +122,9 @@ public class Repositorio {
         return exito;
     }
 
+    public boolean createPregunta(Pregunta pregunta){
+        return Repositorio.getRepositorio().getTodasPreguntas().add(pregunta);
+}
     //public void cargarTodasPreguntas(){ }
 
 }
