@@ -1,7 +1,9 @@
 package com.testmind.al.testmind;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -13,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -20,12 +23,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 
 public class NuevaPreguntaActivity extends AppCompatActivity {
 
     final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
     private Context myContext;
     private ConstraintLayout constraintLayoutNuevaPreguntaActivity;
+    private Spinner spinner;
+    private ArrayAdapter<String> adapter;
+    private Button anadirCategoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +48,66 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
         // Recuperamos el Layout donde mostrar el Snackbar con las notificaciones
         constraintLayoutNuevaPreguntaActivity = findViewById(R.id.constraintLayoutNuevaPreguntaActivity);
 
-        Spinner spinner = (Spinner) findViewById(R.id.categoriaPregunta);
-        String[] letra = {"Programación","Cosas"};
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
+
+        //String[] letra = {"Programación","Cosas"};
+        //spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
 
 
-         //Me tengo que declarar el boton
-       // comprobarCamposPre(enun,preCor,preIn1,preIn2,preIn3);
-        //Tienen que estar en el onclick no aqui
+
+        // Definición de la lista de opciones
+        ArrayList<String> categoria = Repositorio.getRepositorio().getCategoriasBBDD(myContext); //new ArrayList<String>();
+        //items.add("Opción 1");
+
+
+        // Definición del Adaptador que contiene la lista de opciones
+        adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, categoria);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        // Definición del Spinner
+        spinner = (Spinner) findViewById(R.id.categoriaPregunta);
+        spinner.setAdapter(adapter);
+
+        // Definición de la acción del botón
+        anadirCategoria = (Button) findViewById(R.id.anadirCategoria);
+        anadirCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Recuperación de la vista del AlertDialog a partir del layout de la Actividad
+                LayoutInflater layoutActivity = LayoutInflater.from(myContext);
+                View viewAlertDialog = layoutActivity.inflate(R.layout.alert_dialog, null);
+
+                // Definición del AlertDialog
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(myContext);
+
+                // Asignación del AlertDialog a su vista
+                alertDialog.setView(viewAlertDialog);
+
+                // Recuperación del EditText del AlertDialog
+                final EditText dialogInput = (EditText) viewAlertDialog.findViewById(R.id.dialogInput);
+
+                // Configuración del AlertDialog
+                alertDialog
+                        .setCancelable(false)
+                        // Botón Añadir
+                        .setPositiveButton(getResources().getString(R.string.add),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogBox, int id) {
+                                        adapter.add(dialogInput.getText().toString());
+                                        spinner.setSelection(adapter.getPosition(dialogInput.getText().toString()));
+                                    }
+                                })
+                        // Botón Cancelar
+                        .setNegativeButton(getResources().getString(R.string.cancel),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogBox, int id) {
+                                        dialogBox.cancel();
+                                    }
+                                })
+                        .create()
+                        .show();
+            }
+        });
+
 
 
         final Button guardar = (Button) findViewById(R.id.buttonGuardar);
@@ -114,7 +174,7 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                     //TestMindSQLite tsdbh=new TestMindSQLite(myContext,"Preguntas",null,1);
                     //SQLiteDatabase db=tsdbh.getWritableDatabase();
                     Repositorio.getRepositorio().insertPregunta(myContext,p);
-                    Repositorio.getRepositorio().createPregunta(p);
+                    //Repositorio.getRepositorio().createPregunta(p);!!!!!!!!!!!!!!!!!!
                     Repositorio.getRepositorio().cerrarBBDD();
                 }else{
                     Snackbar.make(view, "Tienes que rellenar todos los campos", Snackbar.LENGTH_LONG)

@@ -52,6 +52,68 @@ public class Repositorio {
         return exito;
     }
 
+    public ArrayList<Pregunta> getPreguntasBBDD(Context contexto){
+        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
+        db=tmSQLite.getReadableDatabase();
+        ArrayList<Pregunta> itemsPregunta=null;
+        if(db!=null){
+
+            itemsPregunta=new ArrayList<Pregunta>();
+
+            String[] campos = new String[] {"rowId", "enunciado","categoria","respuestaCorrecta","respuestaIncorrecta1","respuestaIncorrecta2",
+                    "respuestaIncorrecta3"};
+            //String[] args = new String[] {"pre1"};
+
+            Cursor c = db.query("Preguntas", campos, null, null, null, null, null);
+            //Cursor c = db.rawQuery("Select *, rowId from Preguntas",null);
+            //Nos aseguramos de que existe al menos un registro
+            if (c.moveToFirst()) {
+
+                //Recorremos el cursor hasta que no haya más registros
+                do {
+                    //int id= c.getInt(c.getColumnIndex("id"));
+                    int id= c.getInt(0);
+                    String enunciado = c.getString(c.getColumnIndex("enunciado"));
+                    String categoria= c.getString(c.getColumnIndex("categoria"));
+                    String respuestaCorrecta = c.getString(c.getColumnIndex("respuestaCorrecta"));
+                    String respuestaIncorrecta1= c.getString(c.getColumnIndex("respuestaIncorrecta1"));
+                    String respuestaIncorrecta2 = c.getString(c.getColumnIndex("respuestaIncorrecta2"));
+                    String respuestaIncorrecta3= c.getString(c.getColumnIndex("respuestaIncorrecta3"));
+
+                    Pregunta pregunta= new Pregunta(id,enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3);
+                   // Repositorio.getRepositorio().getTodasPreguntas().add(pregunta);
+                    itemsPregunta.add(pregunta);
+                } while(c.moveToNext());
+            }
+           return itemsPregunta;
+        }
+        return itemsPregunta;
+    }
+    public ArrayList<String> getCategoriasBBDD(Context contexto){
+
+        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
+        db=tmSQLite.getReadableDatabase();
+        ArrayList<String> itemsCategoria=null;
+
+        if(db!=null){
+            itemsCategoria=new ArrayList<String>();
+            String[] campos = new String[] {"categoria"};
+
+            Cursor c = db.query(true, "Preguntas",campos, null, null, null, null, null, null);
+            //Nos aseguramos de que existe al menos un registro
+            if (c.moveToFirst()) {
+                //Recorremos el cursor hasta que no haya más registros
+                do {
+                    String categoria= c.getString(c.getColumnIndex("categoria"));
+
+                    itemsCategoria.add(categoria);
+                } while(c.moveToNext());
+            }
+            return itemsCategoria;
+        }
+        return itemsCategoria;
+
+    }
     public boolean updatePregunta(Pregunta pregunta){
         boolean exito=false;
         //Establecemos los campos-valores a actualizar
@@ -94,7 +156,7 @@ public class Repositorio {
         return false;
     }
 
-    public boolean selectPregunta(){
+    public boolean cargarPreguntas(){
 
         boolean exito=false;
         String[] campos = new String[] {"id", "enunciado","categoria","respuestaCorrecta","respuestaIncorrecta1","respuestaIncorrecta2",
@@ -116,7 +178,7 @@ public class Repositorio {
                 String respuestaIncorrecta3= c.getString(c.getColumnIndex("respuestaIncorrecta3"));
 
                 Pregunta pregunta= new Pregunta(enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3);
-                getRepositorio().getTodasPreguntas().add(pregunta);
+                Repositorio.getRepositorio().getTodasPreguntas().add(pregunta);
             } while(c.moveToNext());
         }
         return exito;

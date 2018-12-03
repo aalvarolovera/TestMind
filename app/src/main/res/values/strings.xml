@@ -38,4 +38,12 @@
     <string name="internet_permission_granted">Permisos de escritura concedidos</string>
     <string name="write_permission_accepted">Permiso de escritura concedidos</string>
     <string name="write_permission_not_accepted">Permisos de escritura denegados</string>
+    <string name="anadirCategoria">+</string>
+    <string name="choose">Elige una opción</string>
+    <string name="add">Añadir</string>
+    <string name="new_option">Nueva opción</string>
+    <string name="cancel">Cancelar</string>
+    <string name="add_new_option">Añadir nueva opción</string>
+    <string name="your_option">Tu opción</string>
+
 </resources>

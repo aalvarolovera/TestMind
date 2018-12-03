@@ -1,8 +1,12 @@
 package com.testmind.al.testmind;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +18,10 @@ import java.util.ArrayList;
 
 public class PreguntasActivity extends AppCompatActivity {
     private ArrayList<Pregunta> preguntas;
+    private Context myContext = this;
+    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
+    private ConstraintLayout constraintLayoutPreguntasActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +89,16 @@ public class PreguntasActivity extends AppCompatActivity {
         super.onResume();
 
         TextView tvNoPregunta = findViewById(R.id.textViewNoPreguntas);
-        preguntas = new ArrayList<>();
-        preguntas.add(new Pregunta("¿Qué miras?", "uno","Un payaso","Nada","...","....."));
-        preguntas.add(new Pregunta("¿Qué miras?", "dos","Un payaso","Nada","...","....."));
-        preguntas.add(new Pregunta("¿Qué miras?", "3","Un payaso","Nada","...","....."));
+        //preguntas = new ArrayList<>();
+        //preguntas.add(new Pregunta("¿Qué miras?", "uno","Un payaso","Nada","...","....."));
+        //preguntas.add(new Pregunta("¿Qué miras?", "dos","Un payaso","Nada","...","....."));
+        //preguntas.add(new Pregunta("¿Qué miras?", "3","Un payaso","Nada","...","....."));
+
+        preguntas=Repositorio.getRepositorio().getPreguntasBBDD(myContext);
+
         if(preguntas.isEmpty()){
             tvNoPregunta.setVisibility(View.VISIBLE);
         }
-
-
 
 
         // Inicializa el RecyclerView
@@ -126,4 +135,22 @@ public class PreguntasActivity extends AppCompatActivity {
         MyLog.d("PreguntasActivity","Finalizado OnDestroy");
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CODE_WRITE_EXTERNAL_STORAGE_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso aceptado
+                    Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Permiso rechazado
+                    Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_not_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }
