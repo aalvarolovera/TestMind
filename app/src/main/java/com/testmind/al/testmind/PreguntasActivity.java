@@ -1,12 +1,16 @@
 package com.testmind.al.testmind;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +36,6 @@ public class PreguntasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +47,31 @@ public class PreguntasActivity extends AppCompatActivity {
         });
 
 
+/*
+
+        int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        MyLog.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
+
+        if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            // Permiso denegado
+            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
+            // En las versiones anteriores no es posible hacerlo
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                ActivityCompat.requestPermissions(PreguntaActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
+                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+            } else {
+                Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_denied), Snackbar.LENGTH_LONG)
+                        .show();
+            }
+        } else {
+            // Permiso aceptado
+            Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_granted), Snackbar.LENGTH_LONG)
+                    .show();
+        }
+
+
+       */
 
         MyLog.d("PreguntasActivity", "Finalizado OnCreate");
     }
@@ -113,8 +140,23 @@ public class PreguntasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Acción al pulsar el elemento
                 int position = recyclerView.getChildAdapterPosition(v);
-                Toast.makeText(PreguntasActivity.this, "Posición: " + String.valueOf(position) + " Enunciado: " + preguntas.get(position).getEnunciado() + " Categria: " + preguntas.get(position).getCategoria(), Toast.LENGTH_SHORT)
+                Toast.makeText(PreguntasActivity.this, "Id: " + preguntas.get(position).getId() + " Enunciado: " + preguntas.get(position).getEnunciado() + " Categria: " + preguntas.get(position).getCategoria(), Toast.LENGTH_SHORT)
                         .show();
+
+                //Creamos el Intent
+                Intent intent =
+                        new Intent(PreguntasActivity.this, NuevaPreguntaActivity.class);
+
+                //Creamos la información a pasar entre actividades
+                Bundle b = new Bundle();
+                b.putInt("id", preguntas.get(position).getId());
+
+                //Añadimos la información al intent
+                intent.putExtras(b);
+
+                //Iniciamos la nueva actividad
+                startActivity(intent);
+
             }
         });
 

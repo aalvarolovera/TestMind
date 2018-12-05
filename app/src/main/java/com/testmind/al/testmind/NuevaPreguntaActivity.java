@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -22,8 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class NuevaPreguntaActivity extends AppCompatActivity {
@@ -109,6 +111,35 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
         });
 
 
+        //Configuración de la Edición de Pregunta
+
+        //Recuperamos la información pasada en el intent
+        final Bundle bundle = this.getIntent().getExtras();
+
+        //Construimos el mensaje a mostrar
+       // txtSaludo.setText(bundle.getInt("id"));
+        if(bundle!=null) {
+            int id = bundle.getInt("id");
+
+            Pregunta p = Repositorio.getRepositorio().getPreguntaXid(id, myContext);
+
+
+            EditText enun = (EditText) findViewById(R.id.enunciadoPregunta);
+            Spinner cate = (Spinner) findViewById(R.id.categoriaPregunta);
+            EditText preCor = (EditText) findViewById(R.id.respuestaCorrecta);
+            EditText preIn1 = (EditText) findViewById(R.id.respuestaIncorrecta1);
+            EditText preIn2 = (EditText) findViewById(R.id.respuestaIncorrecta2);
+            EditText preIn3 = (EditText) findViewById(R.id.respuestaIncorrecta3);
+            Button guardar = (Button) findViewById(R.id.buttonGuardar);
+
+            enun.setText(p.getEnunciado());
+            cate.setSelection(Repositorio.getRepositorio().getCategoriasBBDD(myContext).indexOf(p.getCategoria()));
+            preCor.setText(p.getPreguntaCorrecta());
+            preIn1.setText(p.getPreguntaIncorrecta1());
+            preIn2.setText(p.getPreguntaIncorrecta2());
+            preIn3.setText(p.getPreguntaIncorrecta3());
+        }
+
 
         final Button guardar = (Button) findViewById(R.id.buttonGuardar);
         guardar.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +175,8 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                 EditText preIn1 =  (EditText) findViewById(R.id.respuestaIncorrecta1);
                 EditText preIn2 =  (EditText) findViewById(R.id.respuestaIncorrecta2);
                 EditText preIn3 =  (EditText) findViewById(R.id.respuestaIncorrecta3);
-                Button guardar = (Button)findViewById(R.id.buttonGuardar);
+                final Button guardar = (Button)findViewById(R.id.buttonGuardar);
+
                 //Ocultar Teclado
                 ocultarTeclado(enun);
                 ocultarTeclado(preCor);
@@ -170,12 +202,50 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                    String preguntaIn3=preIn3.getText().toString().trim();
                     //Bundle bd=new Bundle();
 
-                    Pregunta p = new Pregunta(enunciado,categoria,preguntaCorrecta,preguntaIn1,preguntaIn2,preguntaIn3);
-                    //TestMindSQLite tsdbh=new TestMindSQLite(myContext,"Preguntas",null,1);
-                    //SQLiteDatabase db=tsdbh.getWritableDatabase();
-                    Repositorio.getRepositorio().insertPregunta(myContext,p);
-                    //Repositorio.getRepositorio().createPregunta(p);!!!!!!!!!!!!!!!!!!
-                    Repositorio.getRepositorio().cerrarBBDD();
+                    if(bundle==null) {
+
+                        Pregunta p = new Pregunta(enunciado, categoria, preguntaCorrecta, preguntaIn1, preguntaIn2, preguntaIn3);
+
+                        Repositorio.getRepositorio().insertPregunta(myContext, p);
+
+                        Repositorio.getRepositorio().cerrarBBDD();
+
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(getApplicationContext(), PreguntasActivity.class));
+                                finish();
+                                guardar.setActivated(false);
+                            }
+                        }, 1);
+
+                    }else if(bundle!=null) {
+                        Pregunta pregutaId = Repositorio.getRepositorio().getPreguntaXid(bundle.getInt("id"), myContext);
+
+
+                        pregutaId.setEnunciado(enun.getText().toString().trim());
+                        pregutaId.setCategoria(cate.getSelectedItem().toString().trim());
+                        pregutaId.setPreguntaCorrecta(preCor.getText().toString().trim());
+                        pregutaId.setPreguntaIncorrecta1(preIn1.getText().toString().trim());
+                        pregutaId.setPreguntaIncorrecta2(preIn2.getText().toString().trim());
+                        pregutaId.setPreguntaIncorrecta3(preIn3.getText().toString().trim());
+
+
+                        Repositorio.getRepositorio().updatePregunta(pregutaId, myContext);
+                        Repositorio.getRepositorio().cerrarBBDD();
+
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(getApplicationContext(), PreguntasActivity.class));
+                                finish();
+                                guardar.setActivated(false);
+                            }
+                        }, 1);
+
+                    }
+
+
                 }else{
                     Snackbar.make(view, "Tienes que rellenar todos los campos", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -200,52 +270,6 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                                    EditText preInc2, EditText preInc3){
             boolean lleno=false;
 
-      //  if(enun.getText().toString().isEmpty()){
-            /*
-            Snackbar.make(constraintLayoutNuevaPreguntaActivity, "Tienes que rellenar el enunciado", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-*/
-     //   }else if(preCor.getText().toString().isEmpty()){
-            /*
-            guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Tienes que rellenar la pregunta correcta", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            */
-     //   }else if(preInc1.getText().toString().isEmpty()){
-            /*
-            guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Tienes que rellenar la pregunta incorrecta 1", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            */
-      //  }else if(preInc2.getText().toString().isEmpty()){
-            /*
-            guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Tienes que rellenar la pregunta incorrecta 2", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            */
-      //  }else if(preInc3.getText().toString().isEmpty()) {
-            /*
-            guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Tienes que rellenar la pregunta incorrecta 3", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            */
-     //   }else
             if(!enun.getText().toString().isEmpty()&&
                 !preCor.getText().toString().isEmpty()&&
                 !preInc1.getText().toString().isEmpty()&&
@@ -254,46 +278,12 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                  !cate.getSelectedItem().toString().isEmpty()){
 
             lleno=true;
-            /*
-                guardar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Meter metodos para pedir permisos de escritura
-                        Snackbar.make(view, "Guardado", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    }
-                });
-                */
         }
         return lleno;
     }
 
 
-/*
-    public void comprobarPermisoEscritura(View view) {
-        int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        MyLog.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
 
-        if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            // Permiso denegado
-            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
-            // En las versiones anteriores no es posible hacerlo
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                ActivityCompat.requestPermissions(NuevaPreguntaActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
-                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
-                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
-            } else {
-                Snackbar.make(view, getResources().getString(R.string.write_permission_denied), Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        } else {
-            // Permiso aceptado
-            Snackbar.make(view, getResources().getString(R.string.write_permission_granted), Snackbar.LENGTH_LONG)
-                    .show();
-        }
-
-    }
-*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -317,5 +307,51 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
     }
+    @Override
+    protected void onStart() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnStart");
+        super.onStart();
 
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnStart");
+    }
+
+    @Override
+    protected void onStop() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnStop");
+        super.onStop();
+
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnStop");
+    }
+
+    @Override
+    protected void onPause() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnPause");
+        super.onPause();
+
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnPause");
+    }
+
+    @Override
+    protected void onRestart() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnRestart");
+        super.onRestart();
+
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnRestar");
+    }
+
+    @Override
+    protected void onResume() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnResume");
+        super.onResume();
+
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        MyLog.d("NuevaPreguntaActivity","Iniciando OnDestroy");
+        super.onDestroy();
+
+        MyLog.d("NuevaPreguntaActivity","Finalizado OnDestroy");
+    }
 }
