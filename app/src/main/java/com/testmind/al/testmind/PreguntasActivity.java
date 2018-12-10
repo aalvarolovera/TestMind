@@ -47,31 +47,6 @@ public class PreguntasActivity extends AppCompatActivity {
         });
 
 
-/*
-
-        int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        MyLog.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
-
-        if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            // Permiso denegado
-            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
-            // En las versiones anteriores no es posible hacerlo
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                ActivityCompat.requestPermissions(PreguntaActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
-                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
-                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
-            } else {
-                Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_denied), Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        } else {
-            // Permiso aceptado
-            Snackbar.make(constraintLayoutPreguntasActivity, getResources().getString(R.string.write_permission_granted), Snackbar.LENGTH_LONG)
-                    .show();
-        }
-
-
-       */
 
         MyLog.d("PreguntasActivity", "Finalizado OnCreate");
     }
@@ -116,17 +91,12 @@ public class PreguntasActivity extends AppCompatActivity {
         super.onResume();
 
         TextView tvNoPregunta = findViewById(R.id.textViewNoPreguntas);
-        //preguntas = new ArrayList<>();
-        //preguntas.add(new Pregunta("¿Qué miras?", "uno","Un payaso","Nada","...","....."));
-        //preguntas.add(new Pregunta("¿Qué miras?", "dos","Un payaso","Nada","...","....."));
-        //preguntas.add(new Pregunta("¿Qué miras?", "3","Un payaso","Nada","...","....."));
 
         preguntas=Repositorio.getRepositorio().getPreguntasBBDD(myContext);
 
         if(preguntas.isEmpty()){
             tvNoPregunta.setVisibility(View.VISIBLE);
         }
-
 
         // Inicializa el RecyclerView
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -151,7 +121,7 @@ public class PreguntasActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putInt("id", preguntas.get(position).getId());
 
-                //Añadimos la información al intent
+                //Añadimos la información del Bundle al intent
                 intent.putExtras(b);
 
                 //Iniciamos la nueva actividad

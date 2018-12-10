@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -23,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -117,7 +117,7 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
         final Bundle bundle = this.getIntent().getExtras();
 
         //Construimos el mensaje a mostrar
-       // txtSaludo.setText(bundle.getInt("id"));
+       // En el caso de que no se haya pulsado un
         if(bundle!=null) {
             int id = bundle.getInt("id");
 
@@ -184,10 +184,8 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                 ocultarTeclado(preIn2);
                 ocultarTeclado(preIn3);
                 ocultarTeclado(guardar);
-               // comprobarCamposPre(constraintLayoutNuevaPreguntaActivity, enun, preCor, preIn1,
-                      //  preIn2,  preIn3);
+
                 //Que comprobar campos solo devuelva un true o false, que solo le entre el constrein layout global, y si
-                //falta alguno mostrar el snack bar generico pero que no lo haga el metodo comprobar campos
 
                 if(comprobarCamposPre(constraintLayoutNuevaPreguntaActivity, enun,cate, preCor, preIn1,
                         preIn2,  preIn3)){
@@ -200,8 +198,8 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                    String preguntaIn1=preIn1.getText().toString().trim();
                    String preguntaIn2=preIn2.getText().toString().trim();
                    String preguntaIn3=preIn3.getText().toString().trim();
-                    //Bundle bd=new Bundle();
 
+                    //Comprueba si se ha pasado seleccionado una pregunta en la actividad anterior
                     if(bundle==null) {
 
                         Pregunta p = new Pregunta(enunciado, categoria, preguntaCorrecta, preguntaIn1, preguntaIn2, preguntaIn3);
@@ -266,6 +264,20 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * Comprueba que los EditText y el Spinner tienen contenido, devolviendo true
+     * en caso afirmativo o false en negativo.
+     *
+     * @param constraintLayoutNuevaPreguntaActivity
+     * @param enun
+     * @param cate
+     * @param preCor
+     * @param preInc1
+     * @param preInc2
+     * @param preInc3
+     * @return boolean
+     */
     public boolean comprobarCamposPre(ConstraintLayout constraintLayoutNuevaPreguntaActivity, EditText enun,Spinner cate, EditText preCor, EditText preInc1,
                                    EditText preInc2, EditText preInc3){
             boolean lleno=false;
@@ -275,8 +287,8 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                 !preInc1.getText().toString().isEmpty()&&
                 !preInc2.getText().toString().isEmpty()&&
                 !preInc3.getText().toString().isEmpty()&&
-                 !cate.getSelectedItem().toString().isEmpty()){
-
+                    cate.getSelectedItem()!=null&&
+                    !cate.getSelectedItem().toString().isEmpty()){
             lleno=true;
         }
         return lleno;

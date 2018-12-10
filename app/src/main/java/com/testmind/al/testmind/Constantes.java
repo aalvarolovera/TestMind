@@ -1,6 +1,6 @@
 package com.testmind.al.testmind;
 
 public class Constantes {
-    public final String usuario="admin";
-    public final String contrasena="admin";
+    public static final String NOMBREBBDD="Preguntas";
+    public static final String RUTA="/sdcard/BaseDatos/";
 }

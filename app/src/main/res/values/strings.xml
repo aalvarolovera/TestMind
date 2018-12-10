@@ -40,5 +40,10 @@
     <string name="cancel">Cancelar</string>
     <string name="add_new_option">Añadir nueva opción</string>
     <string name="your_option">Tu opción</string>
+    <string name="con_la_ayuda_de">Con la ayuda de  Rafa Morales</string>
+    <string name="realizado_por">Realizado por Álvaro Lovera Almagro</string>
+    <string name="respuestaCorrecta" translatable="false" />
+    <string name="write_permission_accepted" translatable="false">Permisos de escritura aceptados</string>
+    <string name="write_permission_not_accepted" translatable="false">Permisos de escritura denegados</string>
 
 </resources>
