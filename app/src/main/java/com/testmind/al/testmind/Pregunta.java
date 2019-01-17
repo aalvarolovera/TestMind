@@ -8,8 +8,9 @@ public class Pregunta {
     private String preguntaIncorrecta1;
     private String preguntaIncorrecta2;
     private String preguntaIncorrecta3;
+    private String imagen;
 
-    public Pregunta(String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3) {
+    public Pregunta(String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3, String imagen) {
        // this.id=id;
         this.enunciado=enunciado;
         this.categoria = categoria;
@@ -17,15 +18,17 @@ public class Pregunta {
         this.preguntaIncorrecta1=preguntaIncorrecta1;
         this.preguntaIncorrecta2=preguntaIncorrecta2;
         this.preguntaIncorrecta3=preguntaIncorrecta3;
+        this.imagen=imagen;
     }
-    public Pregunta(int id,String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3) {
+    public Pregunta(int id,String enunciado,String categoria,String preguntaCorrecta,String preguntaIncorrecta1,String preguntaIncorrecta2,String preguntaIncorrecta3, String imagen) {
         this.id=id;
         this.enunciado=enunciado;
-        this.categoria = categoria;
+        this.categoria=categoria;
         this.preguntaCorrecta=preguntaCorrecta;
         this.preguntaIncorrecta1=preguntaIncorrecta1;
         this.preguntaIncorrecta2=preguntaIncorrecta2;
         this.preguntaIncorrecta3=preguntaIncorrecta3;
+        this.imagen=imagen;
     }
     public int getId() {
         return id;
@@ -81,5 +84,13 @@ public class Pregunta {
 
     public void setPreguntaIncorrecta3(String preguntaIncorrecta3) {
         this.preguntaIncorrecta3 = preguntaIncorrecta3;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

@@ -1,5 +1,6 @@
 package com.testmind.al.testmind;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,13 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class ResumeActivity extends AppCompatActivity {
-
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resume);
+
+        context=this;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -113,6 +118,20 @@ public class ResumeActivity extends AppCompatActivity {
     protected void onResume() {
         MyLog.d("ResumeActivity","Iniciando OnResume");
         super.onResume();
+
+        TextView numCategorias= (TextView) findViewById(R.id.num_categorias_disponibles);
+        TextView numPreguntas= (TextView) findViewById(R.id.num_preguntas_disponibles);
+        if(Repositorio.getRepositorio().getCategoriasBBDD(context) != null) {
+            numCategorias.setText(Integer.toString(Repositorio.getRepositorio().getCategoriasBBDD(context).size()));
+        }else{
+            numCategorias.setText(0);
+        }
+
+        if(Repositorio.getRepositorio().getPreguntasBBDD(context) != null) {
+            numPreguntas.setText(Integer.toString(Repositorio.getRepositorio().getPreguntasBBDD(context).size()));
+        }else{
+            numPreguntas.setText(0);
+        }
 
         MyLog.d("ResumeActivity","Finalizado OnResume");
     }

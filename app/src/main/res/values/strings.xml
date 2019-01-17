@@ -45,5 +45,13 @@
     <string name="respuestaCorrecta" translatable="false" />
     <string name="write_permission_accepted" translatable="false">Permisos de escritura aceptados</string>
     <string name="write_permission_not_accepted" translatable="false">Permisos de escritura denegados</string>
+    <string name="borrar">Borrar</string>
+    <string name="title_activity_resume" translatable="false">Resumen</string>
+    <string name="imagen">Imagen</string>
+    <string name="choose_picture">Elija una imagen</string>
+    <string name="error_files">Elija una imagen</string>
+    <string name="todo">TODO</string>
+    <string name="buttonGaleria">Galeria</string>
+    <string name="buttonCamara">Camara</string>
 
 </resources>

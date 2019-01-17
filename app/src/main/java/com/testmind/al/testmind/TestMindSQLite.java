@@ -9,7 +9,7 @@ public class TestMindSQLite extends SQLiteOpenHelper{
 
         //Sentencia SQL para crear la tabla de Preguntas
         String sqlCreate = "CREATE TABLE Preguntas (enunciado TEXT, categoria TEXT, respuestaCorrecta TEXT,  respuestaIncorrecta1 TEXT" +
-                ", respuestaIncorrecta2 TEXT, respuestaIncorrecta3 TEXT )";
+                ", respuestaIncorrecta2 TEXT, respuestaIncorrecta3 TEXT, imagen TEXT )";
 
         public TestMindSQLite(Context contexto,String nombre, CursorFactory factory , int version) {
             super(contexto, nombre, factory, version);

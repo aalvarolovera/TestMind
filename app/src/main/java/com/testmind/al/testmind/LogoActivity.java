@@ -35,7 +35,7 @@ public class LogoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(getApplicationContext(), ResumeActivity.class));
-
+/*
                 int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 MyLog.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
 
@@ -47,6 +47,7 @@ public class LogoActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(LogoActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
                         // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
                         // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+
                     } else {
                         Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.write_permission_denied), Snackbar.LENGTH_LONG)
                                 .show();
@@ -56,7 +57,7 @@ public class LogoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.write_permission_granted), Snackbar.LENGTH_LONG)
                             .show();
                 }
-
+*/
          finish(); }
         }, 3000);
 

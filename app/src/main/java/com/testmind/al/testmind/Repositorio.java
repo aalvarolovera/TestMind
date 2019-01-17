@@ -13,7 +13,8 @@ public class Repositorio {
     private static SQLiteDatabase db;
     private static TestMindSQLite tmSQLite;
     //private  String ruta="/sdcard/BaseDatos/"+ "Preguntas" +".db";
-    private  String ruta= RUTA + NOMBREBBDD +".db";
+   // private  String ruta= RUTA + NOMBREBBDD +".db";
+    private  String ruta= NOMBREBBDD;
     //REPASAR LO DEL ID
     public static Repositorio getRepositorio() {
         if (miRepositorio == null) {
@@ -25,10 +26,6 @@ public class Repositorio {
         todasPreguntas = new ArrayList<>();
     }
 
-    public void abrirBDEscritura(Context contexto){
-        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
-        db=tmSQLite.getWritableDatabase();
-    }
 
     public void cerrarBBDD(){
         db.close();
@@ -45,12 +42,17 @@ public class Repositorio {
         db=tmSQLite.getWritableDatabase();
 
         if(db!=null) {
-
-            db.execSQL("INSERT INTO Preguntas (enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3) VALUES ('" + p.getEnunciado()
-                    + "','" + p.getCategoria() + "','" + p.getPreguntaCorrecta() + "','" + p.getPreguntaIncorrecta1() + "','" + p.getPreguntaIncorrecta2() + "','" + p.getPreguntaIncorrecta3() + "') ");
-        exito=true;
+            db.execSQL("INSERT INTO Preguntas (enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3, imagen) " +
+                    "VALUES ('" + p.getEnunciado()
+                    + "','" + p.getCategoria() + "','" + p.getPreguntaCorrecta() + "','"
+                    + p.getPreguntaIncorrecta1() + "','" + p.getPreguntaIncorrecta2() + "','"
+                    + p.getPreguntaIncorrecta3() + "','" + p.getImagen()
+                    + "') ");
+            exito=true;
         }
+        db.close();
         return exito;
+
     }
 
     /**
@@ -67,7 +69,7 @@ public class Repositorio {
             itemsPregunta=new ArrayList<Pregunta>();
 
             String[] campos = new String[] {"rowId", "enunciado","categoria","respuestaCorrecta","respuestaIncorrecta1","respuestaIncorrecta2",
-                    "respuestaIncorrecta3"};
+                    "respuestaIncorrecta3","imagen"};
 
             Cursor c = db.query("Preguntas", campos, null, null, null, null, null);
             //Nos aseguramos de que existe al menos un registro
@@ -83,13 +85,16 @@ public class Repositorio {
                     String respuestaIncorrecta1= c.getString(c.getColumnIndex("respuestaIncorrecta1"));
                     String respuestaIncorrecta2 = c.getString(c.getColumnIndex("respuestaIncorrecta2"));
                     String respuestaIncorrecta3= c.getString(c.getColumnIndex("respuestaIncorrecta3"));
+                    String imagen = c.getString(c.getColumnIndex("imagen"));
 
-                    Pregunta pregunta= new Pregunta(id,enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3);
+                    Pregunta pregunta= new Pregunta(id,enunciado,categoria,respuestaCorrecta,respuestaIncorrecta1,respuestaIncorrecta2,respuestaIncorrecta3,imagen);
                     itemsPregunta.add(pregunta);
                 } while(c.moveToNext());
             }
+            db.close();
            return itemsPregunta;
         }
+        db.close();
         return itemsPregunta;
     }
 
@@ -106,7 +111,7 @@ public class Repositorio {
         if(db!=null){
 
             String[] campos = new String[] {"enunciado","categoria","respuestaCorrecta","respuestaIncorrecta1","respuestaIncorrecta2",
-                    "respuestaIncorrecta3"};
+                    "respuestaIncorrecta3","imagen"};
             String[] args=new String[]{String.valueOf(id)};
 
             Cursor c = db.query( "Preguntas", campos, "rowId=?", args, null, null, null);
@@ -124,16 +129,20 @@ public class Repositorio {
                         String respuestaIncorrecta1 = c.getString(c.getColumnIndex("respuestaIncorrecta1"));
                         String respuestaIncorrecta2 = c.getString(c.getColumnIndex("respuestaIncorrecta2"));
                         String respuestaIncorrecta3 = c.getString(c.getColumnIndex("respuestaIncorrecta3"));
+                        String imagen= c.getString(c.getColumnIndex("imagen"));
 
-                        pregunta = new Pregunta(id, enunciado, categoria, respuestaCorrecta, respuestaIncorrecta1, respuestaIncorrecta2, respuestaIncorrecta3);
+                        pregunta = new Pregunta(id, enunciado, categoria, respuestaCorrecta, respuestaIncorrecta1, respuestaIncorrecta2, respuestaIncorrecta3,imagen);
                         // Repositorio.getRepositorio().getTodasPreguntas().add(pregunta);
+                        db.close();
                         return pregunta;
                 } while(c.moveToNext());
 
             }
+            db.close();
             return pregunta;
 
         }
+        db.close();
         return pregunta;
     }
 
@@ -158,12 +167,13 @@ public class Repositorio {
                 //Recorremos el cursor hasta que no haya más registros
                 do {
                     String categoria= c.getString(c.getColumnIndex("categoria"));
-
                     itemsCategoria.add(categoria);
                 } while(c.moveToNext());
             }
+            db.close();
             return itemsCategoria;
         }
+        db.close();
         return itemsCategoria;
 
     }
@@ -188,19 +198,28 @@ public class Repositorio {
         valores.put("respuestaIncorrecta1",pregunta.getPreguntaIncorrecta1());
         valores.put("respuestaIncorrecta2",pregunta.getPreguntaIncorrecta2());
         valores.put("respuestaIncorrecta3",pregunta.getPreguntaIncorrecta3());
+        valores.put("imagen",pregunta.getImagen());
         //Actualizamos el registro en la base de datos
         if(db.update("Preguntas", valores, "rowId=?",args)!=-1){
             exito=true;
         }
+        db.close();
         return exito;
     }
 
-/*
-    public boolean deletePregunta(SQLiteDatabase db,int id, String enunciado, String categoria, String respuestaCorrecta,
-                                  String respuestaIncorrecta1, String respuestaIncorrecta2, String respuestaIncorrecta3){
-        return false;
+    public boolean deletePregunta(Pregunta pregunta, Context contexto){
+        tmSQLite=new TestMindSQLite(contexto,ruta,null,1);
+        db=tmSQLite.getWritableDatabase();
+        boolean exito=false;
+        String[] args=new String[]{String.valueOf(pregunta.getId())};
+
+        if(db.delete("Preguntas",  "rowId=?",args)!=-1){
+            exito=true;
+        }
+        db.close();
+        return exito;
     }
-*/
+
     /**
      * Guarda Pregunta en el ArrayList de Preguntas del Repositorio
      * @param pregunta
