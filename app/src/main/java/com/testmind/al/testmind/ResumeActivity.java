@@ -68,11 +68,11 @@ public class ResumeActivity extends AppCompatActivity {
                 Log.i("ActionBar", "Preguntas");
                 startActivity(new Intent(getApplicationContext(),PreguntasActivity.class));
                 return true;
-                /*
+/*
             case R.id.action_buscar:
                 Log.i("ActionBar", "Buscar!");;
                 return true;
-                */
+*/
             default:
                 return super.onOptionsItemSelected(item);
         }

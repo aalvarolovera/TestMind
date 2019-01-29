@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -15,9 +16,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.Xml;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 public class PreguntasActivity extends AppCompatActivity {
@@ -136,9 +146,48 @@ public class PreguntasActivity extends AppCompatActivity {
         // Muestra el RecyclerView en vertical
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+
+
+
+
         MyLog.d("PreguntasActivity","Finalizado OnResume");
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_preguntas, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_acercaDe:
+                Log.i("ActionBar", "Acerca de");
+                startActivity(new Intent(getApplicationContext(),AcercaDeActivity.class));
+                return true;
+                /*
+            case R.id.action_preguntas:
+                Log.i("ActionBar", "Preguntas");
+                startActivity(new Intent(getApplicationContext(),PreguntasActivity.class));
+                return true;
+                */
+            case R.id.action_exportar:
+                Log.i("ActionBar", "Exportar Todas las preguntas");
 
+                try {
+                    mandarXmlEmail(createXMLString());
+                } catch (IllegalArgumentException | IllegalStateException | IOException ex){
+                   // System.out.println(ex);
+                    Toast.makeText(PreguntasActivity.this, " ERROR", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onDestroy() {
         MyLog.d("PreguntasActivity","Iniciando OnDestroy");
@@ -165,4 +214,114 @@ public class PreguntasActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+    @SuppressWarnings("null")
+    public String createXMLString() throws IllegalArgumentException, IllegalStateException, IOException
+    {
+        XmlSerializer xmlSerializer = Xml.newSerializer();
+        StringWriter writer = new StringWriter();
+
+        xmlSerializer.setOutput(writer);
+
+        //Start Document
+        xmlSerializer.startDocument("UTF-8", true);
+        xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+        //Open Tag <file>
+        xmlSerializer.startTag("", "quiz");
+
+
+
+            ArrayList<Pregunta> preguntas =  Repositorio.getRepositorio().getPreguntasBBDD(myContext);
+
+            for(int i=0; i < preguntas.size();i++){
+
+                Pregunta p=preguntas.get(i);
+
+                xmlSerializer.startTag("", "question");
+                xmlSerializer.attribute("", "type", "category");
+                xmlSerializer.startTag("", "category");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getCategoria());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "category");
+                xmlSerializer.endTag("", "question");
+
+                xmlSerializer.startTag("", "question");
+                xmlSerializer.attribute("", "type", "multichoice");
+                xmlSerializer.startTag("", "name");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getEnunciado());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "name");
+
+                xmlSerializer.startTag("", "questiontext");
+                xmlSerializer.attribute("", "format", "html");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text("<![CDATA[ <p>"+p.getEnunciado()+"</p>]]>");
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.startTag("", "file");
+                xmlSerializer.attribute("", "encoding", "base64");
+                xmlSerializer.text(p.getImagen());
+                xmlSerializer.endTag("", "file");
+                xmlSerializer.endTag("", "questiontext");
+
+                xmlSerializer.startTag("", "answernumbering");
+                xmlSerializer.text("abc");
+                xmlSerializer.endTag("", "answernumbering");
+
+                xmlSerializer.startTag("", "answer");
+                xmlSerializer.attribute("", "fraction", "100");
+                xmlSerializer.attribute("", "format", "html");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getPreguntaCorrecta());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "answer");
+
+                xmlSerializer.startTag("", "answer");
+                xmlSerializer.attribute("", "fraction", "0");
+                xmlSerializer.attribute("", "format", "html");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getPreguntaIncorrecta1());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "answer");
+
+                xmlSerializer.startTag("", "answer");
+                xmlSerializer.attribute("", "fraction", "0");
+                xmlSerializer.attribute("", "format", "html");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getPreguntaIncorrecta2());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "answer");
+
+                xmlSerializer.startTag("", "answer");
+                xmlSerializer.attribute("", "fraction", "0");
+                xmlSerializer.attribute("", "format", "html");
+                xmlSerializer.startTag("", "text");
+                xmlSerializer.text(p.getPreguntaIncorrecta3());
+                xmlSerializer.endTag("", "text");
+                xmlSerializer.endTag("", "answer");
+
+                xmlSerializer.endTag("","question");
+            }
+
+        //end tag <file>
+        xmlSerializer.endTag("", "quiz");
+        xmlSerializer.endDocument();
+
+        return writer.toString();
+    }
+    public boolean mandarXmlEmail(String stringXml) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{});
+        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_TEXT   , stringXml);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(PreguntasActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
+    }
+
 }

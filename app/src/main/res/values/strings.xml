@@ -53,5 +53,6 @@
     <string name="todo">TODO</string>
     <string name="buttonGaleria">Galeria</string>
     <string name="buttonCamara">Camara</string>
+    <string name="action_exportarPreguntas">Exportar las preguntas</string>
 
 </resources>
