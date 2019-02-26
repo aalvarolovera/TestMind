@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,7 +28,11 @@ import android.widget.Toast;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
@@ -177,8 +183,12 @@ public class PreguntasActivity extends AppCompatActivity {
                 Log.i("ActionBar", "Exportar Todas las preguntas");
 
                 try {
-                    mandarXmlEmail(createXMLString());
-                } catch (IllegalArgumentException | IllegalStateException | IOException ex){
+
+                        mandarXmlEmail();
+
+
+                    // crearArchivoXML();
+                } catch (IllegalArgumentException | IllegalStateException  ex){
                    // System.out.println(ex);
                     Toast.makeText(PreguntasActivity.this, " ERROR", Toast.LENGTH_SHORT).show();
                 }
@@ -214,12 +224,42 @@ public class PreguntasActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+    public File crearArchivoXML() {
+
+        // Creo el directoio para guardar el fichero
+        File dir = new File("/sdcard" + "/Xml/");
+
+        // si el direcctorio no existe, lo creo
+        if (!dir.exists()) {
+          //  System.out.println("creando directorio: " + "MiDirectorio");
+            dir.mkdir();
+        }
+
+        // Creamos el fichero en su ubicación completa
+        File file = new File(dir, "BBDDXml.xml");
+
+        File fileXml = new File(Constantes.RutaXml);
+
+        try {
+           // FileOutputStream fos = openFileOutput(fileXml.getName(), MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(openFileOutput(fileXml.getName(), MODE_PRIVATE));
+            osw.write(createXMLString(),0,createXMLString().length());
+            fileXml.createNewFile();
+            osw.flush();
+            osw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileXml;
+    }
+
     @SuppressWarnings("null")
     public String createXMLString() throws IllegalArgumentException, IllegalStateException, IOException
     {
         XmlSerializer xmlSerializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
-
+        String stringXML;
         xmlSerializer.setOutput(writer);
 
         //Start Document
@@ -307,14 +347,54 @@ public class PreguntasActivity extends AppCompatActivity {
         xmlSerializer.endTag("", "quiz");
         xmlSerializer.endDocument();
 
-        return writer.toString();
+   //     Uri path = Uri.parse("file://"+writer.toString());
+        stringXML=writer.toString();
+
+        return stringXML;
     }
-    public boolean mandarXmlEmail(String stringXml) {
+    public boolean mandarXmlEmail() {
+
+        // Creo el directoio para guardar el fichero
+       // File dir = new File("/sdcard" + "/Xml/");
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Xml/");
+        // si el direcctorio no existe, lo creo
+        if (!dir.exists()) {
+            dir.mkdir();
+            System.out.println("creando directorio: " + "MiDirectorio");
+        }
+        // Creamos el fichero en su ubicación completa
+        File fileXml = new File(dir,"BDxml.xml");
+
+        try {
+
+            FileOutputStream fileos= getApplicationContext().openFileOutput(fileXml.getName(), Context.MODE_PRIVATE);
+
+            OutputStreamWriter osw = new OutputStreamWriter(openFileOutput(fileXml.getName(), MODE_PRIVATE));
+          //  osw.write(createXMLString());
+          //  fileXml.createNewFile();
+            fileos.write(createXMLString().getBytes());
+            fileos.close();
+            osw.flush();
+            osw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        StrictMode.VmPolicy.Builder builder= new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        //String filename="contacts_sid.vcf";
+      //  File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), fileXml.getName());
+        Uri path = Uri.fromFile( new File (Environment.getExternalStorageDirectory().getAbsolutePath() + "/Xml/",fileXml.getName()));
+
         Intent i = new Intent(Intent.ACTION_SEND);
+
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{});
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"destinatario@mail.com"});
         i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-        i.putExtra(Intent.EXTRA_TEXT   , stringXml);
+        i.putExtra(Intent.EXTRA_STREAM, path);
+        startActivity(Intent.createChooser(i , "Send email..."));
+
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {

@@ -54,5 +54,6 @@
     <string name="buttonGaleria">Galeria</string>
     <string name="buttonCamara">Camara</string>
     <string name="action_exportarPreguntas">Exportar las preguntas</string>
+    <string name="camera_permission_accepted">Permisos de acceso a cámara aceptados</string>
 
 </resources>

@@ -342,8 +342,37 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
             }
         });
 
-    }
 
+        perdirPermisos();
+
+
+    }
+public void perdirPermisos() {
+    int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    MyLog.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
+    int CameraPermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.CAMERA);
+
+    if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED
+            || CameraPermission != PackageManager.PERMISSION_GRANTED) {
+        // Permiso denegado
+        // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
+        // En las versiones anteriores no es posible hacerlo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+
+            ActivityCompat.requestPermissions(NuevaPreguntaActivity.this, new String[] {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE }, Constantes.REQUEST_CAPTURE_IMAGE);
+
+            // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
+            // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+        } else {
+            Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.write_permission_denied), Snackbar.LENGTH_LONG)
+                    .show();
+        }
+    } else {
+        // Permiso aceptado
+        Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.write_permission_granted), Snackbar.LENGTH_LONG)
+                .show();
+    }
+}
     //INICIO IMAGENES
 
     private void takePicture() {
@@ -549,6 +578,29 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                             .show();
                 }
                 break;
+
+            case Constantes.REQUEST_CAPTURE_IMAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso aceptado
+                    Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.camera_permission_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Permiso rechazado
+                    Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.write_permission_not_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            case Constantes.REQUEST_SELECT_IMAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso aceptado
+                    Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.write_permission_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Permiso rechazado
+                    Snackbar.make(constraintLayoutNuevaPreguntaActivity, getResources().getString(R.string.write_permission_not_accepted), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -594,6 +646,10 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
     protected void onResume() {
         MyLog.d("NuevaPreguntaActivity","Iniciando OnResume");
         super.onResume();
+
+
+
+
 
         MyLog.d("NuevaPreguntaActivity","Finalizado OnResume");
     }
