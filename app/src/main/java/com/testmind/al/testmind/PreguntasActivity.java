@@ -359,23 +359,25 @@ public class PreguntasActivity extends AppCompatActivity {
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Xml/");
         // si el direcctorio no existe, lo creo
         if (!dir.exists()) {
+
+            System.out.println("Se crea carpeta");
             dir.mkdir();
-            System.out.println("creando directorio: " + "MiDirectorio");
         }
         // Creamos el fichero en su ubicación completa
         File fileXml = new File(dir,"BDxml.xml");
-
+        Uri path = Uri.fromFile( new File (Environment.getExternalStorageDirectory().getAbsolutePath() + "/Xml/",fileXml.getName()));
         try {
 
-            FileOutputStream fileos= getApplicationContext().openFileOutput(fileXml.getName(), Context.MODE_PRIVATE);
+           // FileOutputStream fileos= getApplicationContext().openFileOutput(fileXml.getName(), Context.MODE_PRIVATE);
 
-            OutputStreamWriter osw = new OutputStreamWriter(openFileOutput(fileXml.getName(), MODE_PRIVATE));
-          //  osw.write(createXMLString());
-          //  fileXml.createNewFile();
-            fileos.write(createXMLString().getBytes());
-            fileos.close();
-            osw.flush();
-            osw.close();
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(fileXml));
+           // osw.write(createXMLString());
+           // fileXml.createNewFile();
+          //  fileos.write(createXMLString().getBytes());
+            osw.write(createXMLString());
+           // fileos.close();
+           // osw.flush();
+           osw.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -385,7 +387,7 @@ public class PreguntasActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         //String filename="contacts_sid.vcf";
       //  File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), fileXml.getName());
-        Uri path = Uri.fromFile( new File (Environment.getExternalStorageDirectory().getAbsolutePath() + "/Xml/",fileXml.getName()));
+
 
         Intent i = new Intent(Intent.ACTION_SEND);
 
