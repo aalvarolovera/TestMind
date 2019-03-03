@@ -319,7 +319,7 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
                         byte[] byteArray = stream.toByteArray();
                         String strBase64=Base64.encodeToString(byteArray, 0);
                          */
-
+                        pregutaId.setImagen(imagen);
                         Repositorio.getRepositorio().updatePregunta(pregutaId, myContext);
                         Repositorio.getRepositorio().cerrarBBDD();
 
@@ -342,9 +342,30 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
             }
         });
 
-
         perdirPermisos();
 
+        final ImageView imagenView=(ImageView) findViewById(R.id.imageView);
+        final Button borrarImagen = (Button) findViewById(R.id.buttonBorrarImagen);
+        borrarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagenView.setImageBitmap(null);
+                if(bundle!=null) {
+                    Pregunta pregutaId = Repositorio.getRepositorio().getPreguntaXid(bundle.getInt("id"), myContext);
+                    if(!pregutaId.getImagen().isEmpty()) {
+                        // String imagenParaView=pregutaId.getImagen();
+                        // byte[] decodedString = Base64.decode(imagenParaView, DEFAULT);
+                        // Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        //image.setImageBitmap(decodedByte);
+                        // imagenView.setImageBitmap(decodedByte);
+                        // this.image="";
+                        pregutaId.setImagen("");
+                        Repositorio.getRepositorio().updatePregunta(pregutaId,myContext);
+                    }
+
+                }
+            }
+        });
 
     }
 public void perdirPermisos() {
@@ -437,10 +458,6 @@ public void perdirPermisos() {
                     mediaScanIntent.setData(uri);
                     sendBroadcast(mediaScanIntent);
 
-                    /*
-                    Intento de transformar a base64 igual que en la seleccion de imagen
-                     */
-
                     // Se transformam los bytes de la imagen a un Bitmap
                     Bitmap bmp = BitmapFactory.decodeFile(uri.getPath());
                     //Prueba para redimensionar
@@ -493,25 +510,6 @@ public void perdirPermisos() {
                         byte[]b=baos.toByteArray();
                         //y lo guardo en string de pregunta
                         this.imagen=Base64.encodeToString(b,DEFAULT);
-                        /*
-                         //Prueba para redimensionar
-                    Bitmap resized =Bitmap.createScaledBitmap(bmp,500,500,true);
-                    ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG,100,baos);//bmisthebitmapobject
-                    byte[]b=baos.toByteArray();
-                    //y lo guardo en string de pregunta
-                    this.imagen=Base64.encodeToString(b,Base64.DEFAULT);
-                         */
-
-                        //this.imagen=strBase64;
-                        /*
-                        Bitmap selectedImage =  BitmapFactory.decodeFile(filePath);
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        byte[] byteArray = stream.toByteArray();
-                        String strBase64=Base64.encodeToString(byteArray, 0);
-                        */
-
 
                         // Se carga el Bitmap en el ImageView
                         ImageView imageView = findViewById(R.id.imageView);

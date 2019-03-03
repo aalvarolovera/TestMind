@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ResumeActivity extends AppCompatActivity {
@@ -50,6 +53,12 @@ public class ResumeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+    public void clockwise(View view){
+        ImageView image = (ImageView)findViewById(R.id.imageView3);
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.clockwise);
+        image.startAnimation(animation);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,7 +141,8 @@ public class ResumeActivity extends AppCompatActivity {
         }else{
             numPreguntas.setText(0);
         }
-
+        ImageView image = (ImageView)findViewById(R.id.imageView3);
+        clockwise(image);
         MyLog.d("ResumeActivity","Finalizado OnResume");
     }
 
