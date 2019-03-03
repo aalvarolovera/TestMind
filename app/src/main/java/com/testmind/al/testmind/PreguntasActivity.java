@@ -1,10 +1,14 @@
 package com.testmind.al.testmind;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -153,10 +157,22 @@ public class PreguntasActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+        MyReceiver reciver = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
 
+        registerReceiver(reciver, intentFilter);
 
-
-
+        ConnectivityManager conMngr = (ConnectivityManager)this.getSystemService(this.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo mobile = conMngr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+      // boolean mobileConentado=false;
+        if (mobile != null && mobile.isConnectedOrConnecting()) {
+            Log.d("Network Available ", "YES");
+            Toast.makeText(myContext, "Conexión 3G activa " , Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(myContext, "Conexión 3G desactivada" , Toast.LENGTH_SHORT).show();
+            Log.d("Network Available ", "NO");
+        }
 
         MyLog.d("PreguntasActivity","Finalizado OnResume");
     }
@@ -183,10 +199,7 @@ public class PreguntasActivity extends AppCompatActivity {
                 Log.i("ActionBar", "Exportar Todas las preguntas");
 
                 try {
-
                         mandarXmlEmail();
-
-
                     // crearArchivoXML();
                 } catch (IllegalArgumentException | IllegalStateException  ex){
                    // System.out.println(ex);
@@ -405,5 +418,25 @@ public class PreguntasActivity extends AppCompatActivity {
 
         return false;
     }
+    public class MyReceiver extends BroadcastReceiver {
+        public MyReceiver() {
+        }
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // This method is called when this BroadcastReceiver receives an Intent broadcast.
+            final String action = intent.getAction();
+            if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
+                    //do stuff
+                    Toast.makeText(context, "Conexión WIFI activa " , Toast.LENGTH_SHORT).show();
+                } else {
+                    // wifi connection was lost
+                    Toast.makeText(context, "No hay conexión WIFI " , Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+        }
+    }
 }
