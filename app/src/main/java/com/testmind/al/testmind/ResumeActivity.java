@@ -31,16 +31,10 @@ public class ResumeActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarSobreNosotros);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Asignar la acción necesaria. En este caso "volver atrás"
-                    onBackPressed();
-                }
-            });
+
         } else {
             Log.d("SobreNosotros", "Error al cargar toolbar");
         }
@@ -86,11 +80,7 @@ public class ResumeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    @Override
-    public void onBackPressed() {
-        // Asignar la acción necesaria. En este caso terminar la actividad
-        finish();
-    }
+
     @Override
     protected void onStart() {
         MyLog.d("ResumeActivity","Iniciando OnStart");

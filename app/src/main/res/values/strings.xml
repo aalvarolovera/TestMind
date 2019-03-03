@@ -57,4 +57,5 @@
     <string name="camera_permission_accepted">Permisos de acceso a cámara aceptados</string>
     <string name="borrar_imagen">Borrar Imagen</string>
     <string name="imaggeViewAnimacion">imaggeViewAnimacion</string>
+    <string name="anadirCategoria2">+</string>
 </resources>

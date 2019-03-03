@@ -67,11 +67,31 @@ public class PreguntasActivity extends AppCompatActivity {
         });
 
 
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Asignar la acción necesaria. En este caso "volver atrás"
+                    onBackPressed();
+                }
+            });
+        } else {
+            Log.d("SobreNosotros", "Error al cargar toolbar");
+        }
 
         MyLog.d("PreguntasActivity", "Finalizado OnCreate");
     }
 
-
+    @Override
+    public void onBackPressed() {
+        // Asignar la acción necesaria. En este caso terminar la actividad
+        startActivity(new Intent(getApplicationContext(),ResumeActivity.class));
+       // finish();
+    }
 
     @Override
     protected void onStart() {

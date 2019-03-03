@@ -10,25 +10,11 @@
     tools:showIn="@layout/activity_nueva_pregunta">
 
     <Button
-        android:id="@+id/anadirCategoria"
-        android:layout_width="48dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="122dp"
-        android:layout_marginBottom="284dp"
-        android:text="@string/anadirCategoria"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGallery"
-        app:layout_constraintEnd_toEndOf="@+id/buttonGallery"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="@+id/buttonGallery"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/borrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="399dp"
+        android:layout_marginTop="400dp"
         android:layout_marginBottom="29dp"
         android:text="@string/borrar"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -39,20 +25,33 @@
         android:id="@+id/buttonCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="19dp"
         android:layout_marginBottom="19dp"
         android:text="@string/buttonCamara"
         app:layout_constraintBottom_toTopOf="@+id/buttonBorrarImagen"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/buttonBorrarImagen"
         app:layout_constraintTop_toBottomOf="@+id/buttonGallery" />
+
+    <Button
+        android:id="@+id/anadirCategoria"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="119dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginBottom="287dp"
+        android:text="@string/anadirCategoria"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="53dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="51dp"
         android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +64,7 @@
         android:id="@+id/buttonGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="53dp"
         android:layout_marginBottom="23dp"
         android:text="@string/buttonGaleria"
         android:visibility="visible"
@@ -78,11 +77,21 @@
         android:id="@+id/buttonBorrarImagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginBottom="35dp"
         android:text="@string/borrar_imagen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/buttonCamera" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anadirCategoria2"
+        app:layout_constraintStart_toStartOf="@+id/anadirCategoria"
+        app:layout_constraintTop_toTopOf="@+id/anadirCategoria" />
 </android.support.constraint.ConstraintLayout>

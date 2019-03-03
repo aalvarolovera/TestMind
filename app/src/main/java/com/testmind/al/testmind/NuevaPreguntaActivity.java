@@ -87,7 +87,8 @@ public class NuevaPreguntaActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         // Definición de la acción del botón
-        anadirCategoria = (Button) findViewById(R.id.anadirCategoria);
+        anadirCategoria = (Button) findViewById(R.id.button);
+        anadirCategoria.setVisibility(View.VISIBLE);
         anadirCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
